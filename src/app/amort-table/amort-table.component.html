@@ -1,0 +1,78 @@
+<h2>Amortization Table</h2>
+  <div class='amort-container'>
+    <mat-table [dataSource]="dataSource">
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+      <!-- Payment Number -->
+      <ng-container matColumnDef="paymentNum">
+        <mat-header-cell *matHeaderCellDef> # </mat-header-cell>
+        <mat-cell *matCellDef="let month"> {{month.paymentNum}} </mat-cell>
+        <mat-footer-cell *matFooterCellDef> Total </mat-footer-cell>
+      </ng-container>
+
+      <!-- Date -->
+      <ng-container matColumnDef='date'>
+        <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+        <mat-cell *matCellDef='let month'> {{month.date | date}}</mat-cell>
+        <mat-footer-cell *matFooterCellDef> {{getLastPaymentDate() | date}}</mat-footer-cell>
+      </ng-container>
+
+      <!-- Balance -->
+      <ng-container matColumnDef='balance'>
+        <mat-header-cell *matHeaderCellDef> Beginning Balance </mat-header-cell>
+        <mat-cell *matCellDef='let month'> {{month.balance | currency}}</mat-cell>
+        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+      </ng-container>
+
+      <!-- Scheduled Payment -->
+      <ng-container matColumnDef='scheduledPayment'>
+        <mat-header-cell *matHeaderCellDef> Scheduled Payment </mat-header-cell>
+        <mat-cell *matCellDef='let month'> {{month.scheduledPayment | currency}}</mat-cell>
+        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+      </ng-container>
+
+      <!-- Additional Payment -->
+      <ng-container matColumnDef='additionalPayment'>
+        <mat-header-cell *matHeaderCellDef> Additional Payment </mat-header-cell>
+        <mat-cell *matCellDef='let month'>
+          <input *ngIf='month.editable'
+                 matInput placeholder='0'
+                 align='right'
+                 type='number'
+                 [(ngModel)]='month.additionalPayment'
+                 (focusout)='updateTable(month.paymentNum)'
+                 (ngModelChange)='addlPayDirty()'/>
+          <span *ngIf='!month.editable'>{{month.additionalPayment | currency}}</span>
+        </mat-cell>
+        <mat-footer-cell *matFooterCellDef> {{getTotalAddl() | currency}} </mat-footer-cell>
+      </ng-container>
+
+      <!-- Interest -->
+      <ng-container matColumnDef='interest'>
+        <mat-header-cell *matHeaderCellDef> Interest </mat-header-cell>
+        <mat-cell *matCellDef='let month'> {{month.interest | currency}}</mat-cell>
+        <mat-footer-cell *matFooterCellDef> {{getTotalInt() | currency}} </mat-footer-cell>
+      </ng-container>
+
+      <!-- Principal -->
+      <ng-container matColumnDef='principal'>
+        <mat-header-cell *matHeaderCellDef> Principal </mat-header-cell>
+        <mat-cell *matCellDef='let month'> {{month.principal | currency}}</mat-cell>
+        <mat-footer-cell *matFooterCellDef> {{getTotalPrin() | currency}} </mat-footer-cell>
+      </ng-container>
+
+      <!-- Balance-->
+      <ng-container matColumnDef='newBalance'>
+        <mat-header-cell *matHeaderCellDef> Balance </mat-header-cell>
+        <mat-cell *matCellDef='let month'> {{month.newBalance | currency}}</mat-cell>
+        <mat-footer-cell *matFooterCellDef>{{getTotalPrin() + getTotalInt() | currency}}</mat-footer-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let month; columns: displayedColumns;"></mat-row>
+      <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row>
+    </mat-table>
+
+    <mat-paginator [pageSizeOptions]="[12, 24, 60, 360]" showFirstLastButtons></mat-paginator>
+  </div>

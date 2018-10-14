@@ -1,0 +1,107 @@
+<mat-card>
+  <mat-card-content>
+    <form class='jumbotron row'>
+      <div class='col-1'></div>
+      <div class='col-10'>
+        <h2>Enter your mortgage information</h2>
+        <div class='row'>
+          <span class='col-3'>Purchase Price</span>
+            <input matInput placeholder='e.g. 200000'
+                   align='right'
+                   name='purchase'
+                   type='number'
+                   class='col-3'
+                   [(ngModel)]='this.mortgage.purchasePrice'
+                   (keyup)='this.updatePurchasePrice()'/>
+          <span class='col-6 loan-details'
+                *ngIf='this.mortgage.loanAmount'>
+            Loan Amount: {{this.mortgage.loanAmount}}
+          </span>
+        </div>
+
+        <div class='row'>
+          <span class='col-3'>Down Payment Percentage</span>
+          <input matInput placeholder='e.g. 10'
+                 align='right'
+                 name='downPayment'
+                 type='number'
+                 class='col-3'
+                 [(ngModel)]='this.mortgage.percentDownPayment'
+                 (keyup)='this.updateDownPaymentPercentage()'/>
+          <span class='col-6 loan-details'
+                *ngIf='this.mortgage.monthlyInterestRate'>
+            Monthly Interest Rate: {{this.mortgage.monthlyInterestRate | number: '1.2-3'}}%
+          </span>
+        </div>
+
+        <div class='row'>
+          <span class='col-3'>Interest Rate</span>
+          <input matInput placeholder='e.g. 5.25'
+                 name='rate'
+                 type='number'
+                 class='col-3'
+                 [(ngModel)]='this.mortgage.interestRate'
+                 (keyup)='this.updateInterestRate()'/>
+          <span class='col-6 loan-details'
+                *ngIf='this.mortgage.loanDurationMonths'>
+            Loan Duration: {{this.mortgage.loanDurationMonths}} months
+          </span>
+        </div>
+
+        <div class='row'>
+          <span class='col-3'>Loan Duration (years)</span>
+          <input matInput placeholder='e.g. 30'
+                 name='durationYears'
+                 type='number'
+                 class='col-3'
+                 [(ngModel)]='this.mortgage.loanDurationYears'
+                 (keyup)='this.updateLoanDuration()'/>
+          <span class='col-6 loan-result'
+                *ngIf='this.mortgage.monthlyPayment'>
+            Monthly Payment: {{this.mortgage.monthlyPayment}}
+          </span>
+        </div>
+
+        <hr>
+        <div class='row'>
+          <span class='col-3'>Current Principal</span>
+          <input matInput placeholder='e.g 175000'
+                 name='principal'
+                 type='number'
+                 class='col-3'
+                 [(ngModel)]='this.mortgage.principal' />
+          <span class='col-6 loan-details'
+                *ngIf='this.mortgage.monthlyPayment && this.mortgage.principal && this.mortgage.monthlyInterestRate'>
+            Monthly Interest:
+            {{this.getMonthlyInterest() | currency}}
+          </span>
+        </div>
+
+        <div class='row'>
+          <span class='col-3'></span>
+          <span class='col-3'>
+            <button mat-button type='submit'
+                    (click)='triggerAmortCalendar()'
+                    *ngIf='this.mortgage.principal && this.mortgage.monthlyPayment'>
+              Get Amort Table
+            </button>
+          </span>
+          <span class='col-6 loan-details'
+                *ngIf='this.mortgage.monthlyPayment && this.getMonthlyInterest()'>
+            Monthly Principal Payment: {{(this.mortgage.monthlyPayment - this.getMonthlyInterest()) | currency}}
+          </span>
+        </div>
+        <div *ngIf='this.amortTrigger === true'
+             class='jumbotron row'>
+          <div class='col-1'></div>
+          <div class='col-10'>
+            <!--TODO add ng checks-->
+
+            <app-amort-table [mortgageInfo]='this.mortgage'></app-amort-table>
+          </div>
+        </div>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>
+

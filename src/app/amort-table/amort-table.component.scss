@@ -1,0 +1,22 @@
+
+//.full-width {
+//  width: 100%;
+//}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+mat-footer-row {
+  font-weight: bold;
+}
+
+mat-row:nth-child(even) {
+  background-color:white;
+}
+
+mat-row:nth-child(odd) {
+  background-color:lightblue;
+}
