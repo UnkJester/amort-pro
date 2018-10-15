@@ -121,9 +121,12 @@ export class AmortTableComponent implements OnInit, AfterViewInit {
       return prev + cur.principal;
     }, 0);
   }
+
   getLastPaymentDate() {
-    return this.dataEntries[
-      _.findIndex(this.dataEntries, {'newBalance': 0})
-      ].date;
+    const index = _.findIndex(this.dataEntries, {'newBalance': 0});
+    if (index >= 0) {
+      return this.dataEntries[index].date;
+    }
+    return 0;
   }
 }

@@ -9,7 +9,7 @@ export class MortgageInfo {
   periodsPerYear = 12; // default to months for now, update later
   monthlyInterestRate?: number;
   monthlyPayment?: number;
-  nextPaymentDate?: Date;
+  nextPaymentDate = Date.now();
 
   public static calcPaymentAmount(loanAmount: number, interestRate: number, numPayments: number): number {
     const top = interestRate * Math.pow(1 + interestRate, numPayments);
@@ -20,7 +20,7 @@ export class MortgageInfo {
 
   constructor(purchasePrice?: number, percentDownPayment?: number, loanAmount?: number, principal?: number,
               interestRate?: number, loanDurationYears?: number, loanDurationMonths?: number,
-              monthlyInterestRate?: number, monthlyPayment?: number, nextPaymentDate?: Date) {
+              monthlyInterestRate?: number, monthlyPayment?: number, nextPaymentDate?: number) {
     this.purchasePrice = purchasePrice;
     this.percentDownPayment = percentDownPayment;
     this.loanAmount = loanAmount;

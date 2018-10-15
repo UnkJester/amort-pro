@@ -9,6 +9,7 @@ import {FormsModule} from '@angular/forms';
 import { AmortTableComponent } from './amort-table/amort-table.component';
 import { MatTableModule } from '@angular/material';
 import { MatPaginatorModule } from '@angular/material';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 
 @NgModule({
   declarations: [
