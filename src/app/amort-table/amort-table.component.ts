@@ -31,18 +31,23 @@ export class AmortTableComponent implements OnInit, AfterViewInit {
   }
 
   initTable() {
+    let nextPaymentDate = new Date();
+    nextPaymentDate.setMonth(nextPaymentDate.getMonth() == 11 ? 0 : nextPaymentDate.getMonth() + 1);
+    nextPaymentDate.setFullYear(nextPaymentDate.getMonth() == 0 ? nextPaymentDate.getFullYear() + 1 : nextPaymentDate.getFullYear());
+    nextPaymentDate.setDate(1);
+
     this.dataEntries = [];
     this.dataEntries.push({
-      paymentNum: 1,
-      date: new Date(2018, 9, 1), // TODO update to get next available date
-      balance: this.mortgageInfo.principal,
-      scheduledPayment: this.mortgageInfo.monthlyPayment,
-      additionalPayment: 0,
-      interest: this.mortgageInfo.monthlyInterestRate * this.mortgageInfo.principal / 100,
-      principal: this.mortgageInfo.monthlyPayment - this.mortgageInfo.monthlyInterestRate * this.mortgageInfo.principal / 100,
-      newBalance: this.mortgageInfo.principal -
+    paymentNum: 1,
+    date: nextPaymentDate,
+    balance: this.mortgageInfo.principal,
+    scheduledPayment: this.mortgageInfo.monthlyPayment,
+    additionalPayment: 0,
+    interest: this.mortgageInfo.monthlyInterestRate * this.mortgageInfo.principal / 100,
+    principal: this.mortgageInfo.monthlyPayment - this.mortgageInfo.monthlyInterestRate * this.mortgageInfo.principal / 100,
+    newBalance: this.mortgageInfo.principal -
         (this.mortgageInfo.monthlyPayment - this.mortgageInfo.monthlyInterestRate * this.mortgageInfo.principal / 100),
-      editable: true
+    editable: true
     });
   }
 
